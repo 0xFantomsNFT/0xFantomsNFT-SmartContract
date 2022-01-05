@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: MIT
+
+/*
+    0xFantomsNFT Testnet Smart Contract v1
+*/
 pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -8,15 +12,17 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /// @custom:security-contact r1xvu0@protonmail.com
-contract Fantoms is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
+contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
 
-    string hiddenTokenURI = "ipfs://QmYY1gAdVXzpCP7w9ZoNXc1w5jexEqgbrWRsLr941DACQp/";
-    string unveiledUri = "REDACTED/";
-    string contractMetadata = "";
+    string private hiddenTokenURI = "https://storageapi.fleek.co/a1fa5514-37e2-41b9-a76c-1a7147172e46-bucket/HiddenFantom-Testnet-Metadata/";
+    string private unveiledUri = "REDACTED/";
+
+    string public contractMetadata = "";
+    bool public canMint = false;
+    bool public canUnveil = false;
+
     uint256 maxSupply = 10001;
-    bool canMint = false;
-    bool canUnveil = false;
 
     Counters.Counter private _tokenIdCounter;
 
@@ -83,14 +89,6 @@ contract Fantoms is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         } else {
             canUnveil = true;
         }
-    }
-
-    function mintPossible() public view returns(bool) {
-        return canMint;
-    }
-
-    function unveilPossible() public view returns(bool) {
-        return canUnveil;
     }
 
     // The following functions are overrides required by Solidity.
