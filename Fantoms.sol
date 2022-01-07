@@ -18,9 +18,11 @@ contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     string private hiddenTokenURI = "https://storageapi.fleek.co/a1fa5514-37e2-41b9-a76c-1a7147172e46-bucket/HiddenFantom-Testnet-Metadata/";
     string private unveiledUri = "REDACTED/";
 
-    string public contractMetadata = "";
+    string public contractMetadata = "https://storageapi.fleek.co/a1fa5514-37e2-41b9-a76c-1a7147172e46-bucket/Fantoms-tv1a_C_Metadata.json";
     bool public canMint = false;
     bool public canUnveil = false;
+
+    mapping (uint => bool) public fantomUnveiled;
 
     uint256 maxSupply = 10001;
 
@@ -63,6 +65,7 @@ contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         require(tokenId < _tokenIdCounter.current(), "Unveiling Fantoms that are not minted is not possible :(");
         string memory unveilUri = concat(uint2str(tokenId), ".json");
         string memory realUri = concat(unveiledUri, unveilUri);
+        fantomUnveiled[tokenId] = true;
         _setTokenURI(tokenId, realUri);
         return tokenURI(tokenId);
     }
