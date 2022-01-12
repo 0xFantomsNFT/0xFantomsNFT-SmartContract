@@ -21,8 +21,8 @@ contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     string private hiddenTokenURI = "https://storageapi.fleek.co/a1fa5514-37e2-41b9-a76c-1a7147172e46-bucket/HiddenFantom-Testnet-Metadata/";
     string private unveiledUri = "REDACTED/";
 
-    uint public grandUnveilNum = 1;
-    uint public grandUnveilLimit = 50; 
+    uint private grandUnveilNum = 1;
+    uint private grandUnveilLimit = 50; 
 
     string public contractMetadata = "https://storageapi.fleek.co/a1fa5514-37e2-41b9-a76c-1a7147172e46-bucket/Fantoms-tv1a_C_Metadata.json";
     bool public canMint = false;
@@ -38,12 +38,6 @@ contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         _tokenIdCounter.increment();
     }
 
-    // modifier batchMintRequirement() {
-    //     uint _count;
-
-    //     _;
-    // }
-    
     function contractURI() public view returns (string memory) {
         return contractMetadata;
     }
@@ -81,7 +75,7 @@ contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
 
     function grandUnveil() public onlyOwner {
         for (uint i=grandUnveilNum; i < grandUnveilLimit; i++) {
-            // unveil(i);
+            unveil(i);
         }
         
         grandUnveilNum += 50;
