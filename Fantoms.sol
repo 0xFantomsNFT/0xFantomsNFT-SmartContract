@@ -3,6 +3,11 @@
 /*
     0xFantomsNFT Testnet Smart Contract v1
 */
+
+/*
+    used on the Rinkeby Testnet
+    This contract is DEPRECATED
+*/
 pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
