@@ -1,3 +1,4 @@
+ 
 // SPDX-License-Identifier: MIT
 
 /*
@@ -20,8 +21,8 @@ contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     string private hiddenTokenURI = "https://storageapi.fleek.co/a1fa5514-37e2-41b9-a76c-1a7147172e46-bucket/HiddenFantom-Testnet-Metadata/";
     string private unveiledUri = "REDACTED/";
 
-    uint private grandUnveilNum = 1;
-    uint private grandUnveilLimit = 100; 
+    uint public grandUnveilNum = 1;
+    uint public grandUnveilLimit = 50; 
 
     string public contractMetadata = "https://storageapi.fleek.co/a1fa5514-37e2-41b9-a76c-1a7147172e46-bucket/Fantoms-tv1a_C_Metadata.json";
     bool public canMint = false;
@@ -36,6 +37,12 @@ contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     constructor() ERC721("Fantoms", "FTMS") {
         _tokenIdCounter.increment();
     }
+
+    // modifier batchMintRequirement() {
+    //     uint _count;
+
+    //     _;
+    // }
     
     function contractURI() public view returns (string memory) {
         return contractMetadata;
@@ -43,6 +50,21 @@ contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     
     function changeContractMetadata(string memory newMetadataURI) public onlyOwner {
         contractMetadata = newMetadataURI;
+    }
+
+    function batchMint(uint _count, address to) public {
+        require(_count <= 20, "Max batch mint is 20 Fantoms.");
+        require(_count >= 5, "Min batch mint is 5 Fantoms.");
+        require(_tokenIdCounter.current() + _count <= maxSupply);
+        for (uint i=0; i < _count; i++) {
+            safeMint(to);
+        }
+    }
+
+    function batchUnveil(uint[] memory unveilList) public {
+        for (uint i=0; i < unveilList.length; i++) {
+            unveil(unveilList[i]);
+        }
     }
 
     function safeMint(address to) public returns(string memory){
@@ -59,10 +81,11 @@ contract FantomsNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
 
     function grandUnveil() public onlyOwner {
         for (uint i=grandUnveilNum; i < grandUnveilLimit; i++) {
-            unveil(i);
-            grandUnveilNum += 1;
+            // unveil(i);
         }
-        grandUnveilLimit += 100;
+        
+        grandUnveilNum += 50;
+        grandUnveilLimit += 50;
     }
 
     function unveil(uint tokenId) public returns(string memory){
